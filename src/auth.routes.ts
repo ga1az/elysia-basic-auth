@@ -179,4 +179,9 @@ export const auth = new Elysia({
         }),
       }),
     }
-  );
+  )
+  .post("/signout", async ({ cookie }) => {
+    cookie.sessionToken.remove();
+
+    return { success: true };
+  });
