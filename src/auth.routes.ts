@@ -181,6 +181,20 @@ export const auth = new Elysia({
     }
   )
   .post("/signout", async ({ cookie }) => {
+    const cookieSession = cookie.sessionToken.value;
+
+    if (!cookieSession) {
+      return { error: "No session found" };
+    }
+
+    const session = await database
+      .query("DELETE FROM sessions WHERE token = $token")
+      .run({ $token: cookieSession });
+
+    if (session.changes !== 1) {
+      return { error: "Failed to sign out" };
+    }
+
     cookie.sessionToken.remove();
 
     return { success: true };
