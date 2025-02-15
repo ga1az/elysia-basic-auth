@@ -5,12 +5,7 @@ import { privateRoute } from "./private.route";
 
 createAllTables(db());
 
-const app = new Elysia({
-  cookie: {
-    secrets: "mysecretsupersecret",
-    sign: ["sessionToken"],
-  },
-})
+const app = new Elysia()
   .get("/", () => "OK")
   .use(auth)
   .use(privateRoute)
